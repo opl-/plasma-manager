@@ -1,6 +1,9 @@
 # Global hotkeys (user-defined keyboard shortcuts):
 { config, lib, ... }:
 let
+  inherit (import ../lib/hash-to-uuid.nix {  })
+    hashToUuid;
+
   cfg = config.programs.plasma;
 
   commandType = { name, ... }: {
@@ -37,7 +40,7 @@ let
     triggers = [{
       Key = cmd.key;
       Type = "SHORTCUT";
-      Uuid = "{" + builtins.hashString "sha256" (builtins.toString idx + cmd.name) + "}";
+      Uuid = "{" + hashToUuid (builtins.toString idx + cmd.name) + "}";
     }];
 
     actions = [{
